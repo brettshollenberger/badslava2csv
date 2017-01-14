@@ -7,8 +7,11 @@ require "csv"
 require "pathname"
 require "rake"
 
+city = ARGV[0] || "San Francisco"
 
-url = "http://badslava.com/open-mics.php?city=San%20Francisco&state=CA&type=Comedy"
+puts "Listing events for #{city}"
+
+url = "http://badslava.com/open-mics.php?city=#{URI.encode(city)}&state=CA&type=Comedy"
 output_path = Pathname.new(File.expand_path("./data"))
 
 FileUtils.mkdir_p(output_path)
@@ -19,9 +22,9 @@ days = doc.css("#demo [color=red]").map { |day| day.children.text }.reject! { |x
 
 days.reverse!
 
-csvs = doc.css("table").map do |table|
+data = doc.css("table").map do |table|
   headers = table.css("thead").css("tr").first.css("th").map do |table_header|
-    table_header.children.first.text
+    table_header.children.first.text.downcase.split(" ").join("_")
   end
 
   rows = table.css("tbody").map do |tbody|
@@ -30,24 +33,39 @@ csvs = doc.css("table").map do |table|
     end
   end
 
-  # row_hashes = rows.map do |row|
-  #   headers.zip(row).to_h
-  # end
-
-  day      = days.pop
-  filename = "#{day.downcase.gsub(/[\s|\/]/) { "_" }}.csv"
-  path     = output_path.join(filename)
-
-  CSV.open(path, "wb") do |csv|
-    csv << headers
-
-    rows.each do |row|
-      csv << row
-    end
+  row_hashes = rows.map do |row|
+    headers.zip(row).to_h
   end
-  
-  path
+
+  day = days.pop
+
+  row_hashes.map do |row|
+    start_time = row["time"].upcase.gsub(/(AM|PM)/) { |m| " #{m}" }
+    end_time = (Time.parse(start_time) + (3600 * 2)).strftime("%l:%M %p").strip
+    {
+      "Subject" => row["name"],
+      "Start Date" => day.split(" ").last,
+      "Start Time" => start_time,
+      "End Time" => end_time,
+      "All Day Event" => "False",
+      "Private" => "True",
+      "Description" => row["phone"],
+      "Location" => "#{row["venue"]} #{row["address"]}, #{row["city"]}, #{row["state"]}"
+    }
+  end
 end
 
-binding.pry
-1
+data.flatten!
+
+filename = "google.csv"
+path     = output_path.join(filename)
+
+CSV.open(path, "wb") do |csv|
+  csv << data.first.keys
+
+  data.map(&:values).each do |row|
+    csv << row
+  end
+end
+
+puts path

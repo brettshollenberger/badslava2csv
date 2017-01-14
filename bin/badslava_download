@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-mkdir -p data
-curl -L http://badslava.com/open-mics.php\?city\=San%20Francisco\&state\=CA\&type\=Comedy > data/download.html
