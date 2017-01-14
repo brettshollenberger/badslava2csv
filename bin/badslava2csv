@@ -12,7 +12,7 @@ Options = Struct.new(:city, :output_dir)
 
 class Parser
   def self.parse(options)
-    args = Options.new("world")
+    args = Options.new("San Francisco", "./data")
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: badslava2csv [options]"
@@ -37,8 +37,8 @@ class Parser
 end
 options = Parser.parse(ARGV)
 
-city = options.city || "San Francisco"
-output_dir = File.expand_path(options.output_dir || "./data")
+city = options.city
+output_dir = File.expand_path(options.output_dir)
 
 puts "Listing events for #{city}"
 
