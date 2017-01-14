@@ -14,8 +14,8 @@ require 'rake'
 require 'juwelier'
 Juwelier::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = "badslava_import"
-  gem.homepage = "http://github.com/brettshollenberger/badslava_import"
+  gem.name = "badslava2csv"
+  gem.homepage = "http://github.com/brettshollenberger/badslava2csv"
   gem.license = "MIT"
   gem.summary = %Q{Import Badslava events to Google Calendar}
   gem.description = %Q{Import Badslava events to Google Calendar}
