@@ -6,13 +6,44 @@ require "open-uri"
 require "csv"
 require "pathname"
 require "rake"
+require 'optparse'
 
-city = ARGV[0] || "San Francisco"
+Options = Struct.new(:city, :output_dir)
+
+class Parser
+  def self.parse(options)
+    args = Options.new("world")
+
+    opt_parser = OptionParser.new do |opts|
+      opts.banner = "Usage: badslava2csv [options]"
+
+      opts.on("-cCITY", "--city=CITY", "City to list") do |city|
+        args.city = city
+      end
+
+      opts.on("-oOUTPUTDIR", "--output-dir=OUTPUTDIR", "Output Director") do |output_dir|
+        args.output_dir = output_dir
+      end
+
+      opts.on("-h", "--help", "Prints this help") do
+        puts opts
+        exit
+      end
+    end
+
+    opt_parser.parse!(options)
+    return args
+  end
+end
+options = Parser.parse(ARGV)
+
+city = options.city || "San Francisco"
+output_dir = File.expand_path(options.output_dir || "./data")
 
 puts "Listing events for #{city}"
 
 url = "http://badslava.com/open-mics.php?city=#{URI.encode(city)}&state=CA&type=Comedy"
-output_path = Pathname.new(File.expand_path("./data"))
+output_path = Pathname.new(output_dir)
 
 FileUtils.mkdir_p(output_path)
 
