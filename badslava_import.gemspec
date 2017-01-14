@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.authors = ["brettshollenberger"]
   s.date = "2017-01-14"
-  s.description = "Import Badslava events to Google Calendar"
+  s.description = "TODO: longer description of your gem"
   s.email = "brett.shollenberger@gmail.com"
   s.executables = ["badslava2csv"]
   s.extra_rdoc_files = [
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/brettshollenberger/badslava_import"
   s.licenses = ["MIT"]
   s.rubygems_version = "2.4.5.1"
-  s.summary = "Import Badslava events to Google Calendar"
+  s.summary = "TODO: one-line summary of your gem"
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
