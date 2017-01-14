@@ -5,16 +5,16 @@
 # stub: badslava_import  ruby lib
 
 Gem::Specification.new do |s|
-  s.name = "badslava_import"
+  s.name = "badslava2csv"
   s.version = ""
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["brettshollenberger"]
   s.date = "2017-01-14"
-  s.description = "TODO: longer description of your gem"
+  s.description = "Import Badslava events to Google Calendar"
   s.email = "brett.shollenberger@gmail.com"
-  s.executables = [".DS_Store", "badslava2csv"]
+  s.executables = ["badslava2csv"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -32,10 +32,10 @@ Gem::Specification.new do |s|
     "data/google.csv",
     "lib/badslava_import.rb"
   ]
-  s.homepage = "http://github.com/brettshollenberger/badslava_import"
+  s.homepage = "http://github.com/brettshollenberger/badslava2csv"
   s.licenses = ["MIT"]
   s.rubygems_version = "2.4.5.1"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "A tool for stand up comics"
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
