@@ -17,8 +17,8 @@ Juwelier::Tasks.new do |gem|
   gem.name = "badslava_import"
   gem.homepage = "http://github.com/brettshollenberger/badslava_import"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Import Badslava events to Google Calendar}
+  gem.description = %Q{Import Badslava events to Google Calendar}
   gem.email = "brett.shollenberger@gmail.com"
   gem.authors = ["brettshollenberger"]
 
