@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require "pry"
+require "nokogiri"
+require "open-uri"
+require "csv"
+require "pathname"
+require "rake"
+
+
+url = "http://badslava.com/open-mics.php?city=San%20Francisco&state=CA&type=Comedy"
+output_path = Pathname.new(File.expand_path("./data"))
+
+FileUtils.mkdir_p(output_path)
+
+doc = Nokogiri::HTML(open(url))
+
+days = doc.css("#demo [color=red]").map { |day| day.children.text }.reject! { |x| x == "Monthly" }
+
+days.reverse!
+
+csvs = doc.css("table").map do |table|
+  headers = table.css("thead").css("tr").first.css("th").map do |table_header|
+    table_header.children.first.text
+  end
+
+  rows = table.css("tbody").map do |tbody|
+    tbody.css("td").map do |table_division|
+      table_division.children.text
+    end
+  end
+
+  # row_hashes = rows.map do |row|
+  #   headers.zip(row).to_h
+  # end
+
+  day      = days.pop
+  filename = "#{day.downcase.gsub(/[\s|\/]/) { "_" }}.csv"
+  path     = output_path.join(filename)
+
+  CSV.open(path, "wb") do |csv|
+    csv << headers
+
+    rows.each do |row|
+      csv << row
+    end
+  end
+  
+  path
+end
+
+binding.pry
+1
