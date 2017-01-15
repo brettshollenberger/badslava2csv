@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-badslava2csv -p -o $(pwd)/data/google.csv -c "San Francisco" && terminal-notifier "import $(pwd)/data/google.csv"
