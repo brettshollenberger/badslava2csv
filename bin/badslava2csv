@@ -8,11 +8,11 @@ require "pathname"
 require "rake"
 require 'optparse'
 
-Options = Struct.new(:city, :output_dir)
+Options = Struct.new(:city, :output_dir, :programmatic)
 
 class Parser
   def self.parse(options)
-    args = Options.new("San Francisco", "./data")
+    args = Options.new("San Francisco", "./data", false)
 
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: badslava2csv [options]"
@@ -23,6 +23,10 @@ class Parser
 
       opts.on("-oOUTPUTDIR", "--output-dir=OUTPUTDIR", "Output Director") do |output_dir|
         args.output_dir = output_dir
+      end
+
+      opts.on("-p", "--programmatic", "Output Director") do
+        args.programmatic = true
       end
 
       opts.on("-h", "--help", "Prints this help") do
@@ -37,10 +41,15 @@ class Parser
 end
 options = Parser.parse(ARGV)
 
-city = options.city
-output_dir = File.expand_path(options.output_dir)
+city         = options.city
+output_dir   = File.expand_path(options.output_dir)
+@programmatic = options.programmatic
 
-puts "Listing events for #{city}"
+def pp(msg)
+  puts msg unless @programmatic
+end
+
+pp "Listing events for #{city}"
 
 url = "http://badslava.com/open-mics.php?city=#{URI.encode(city)}&state=CA&type=Comedy"
 output_path = Pathname.new(output_dir)
@@ -99,4 +108,4 @@ CSV.open(path, "wb") do |csv|
   end
 end
 
-puts path
+puts "{path: '#{path}'}"
